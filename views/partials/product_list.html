@@ -1,0 +1,46 @@
+<!-- SẢN PHẨM HOT NHẤT -->
+<div class="product-section">
+    <div class="section-title">Sản phẩm hot nhất</div>
+    <div class="formproduct">
+    </div>
+</div>
+
+<!-- PHỤ KIỆN NỔI BẬT -->
+<div class="product-section">
+    <div class="section-title">Phụ kiện nổi bật</div>
+</div>
+
+<script>
+    // Product interaction scripts
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click handlers for product cards
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            product.addEventListener('click', function(e) {
+                if (!e.target.matches('button')) {
+                    console.log('Product clicked:', this.querySelector('.nameProduct').textContent);
+                }
+            });
+        });
+
+        // Add wishlist functionality
+        const wishlistBtns = document.querySelectorAll('.btn-secondary');
+        wishlistBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.innerHTML = this.innerHTML === '♡' ? '♥' : '♡';
+                this.style.color = this.innerHTML === '♥' ? '#f90404' : '#6c757d';
+            });
+        });
+
+        // Add buy now functionality
+        const buyBtns = document.querySelectorAll('.btn-primary');
+        buyBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productName = this.closest('.product').querySelector('.nameProduct').textContent;
+                alert(`Đã thêm "${productName}" vào giỏ hàng!`);
+            });
+        });
+    });
+</script>

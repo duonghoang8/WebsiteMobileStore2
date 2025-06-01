@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Mobile Store</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <style>
+        .admin-header {
+            background: #343a40;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .admin-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info span {
+            font-size: 14px;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        
+        .welcome-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-col input, .form-col textarea, .form-col button {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-col button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .form-col button:hover {
+            background: #218838;
+        }
+        
+        .image-preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        #product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        #product-table th, #product-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        #product-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        #product-table img {
+            border-radius: 4px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-edit:hover {
+            background: #e0a800;
+        }
+        
+        .btn-delete:hover {
+            background: #c82333;
+        }
+        
+        .row2 {
+            display: flex;
+            gap: 20px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .boxleft {
+            width: 250px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .boxright {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .category {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .category:hover {
+            background: #f8f9fa;
+        }
+        
+        .category.active {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .category img {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .no-products {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .row2 {
+                flex-direction: column;
+            }
+            
+            .boxleft {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1>🏪 Mobile Store Admin</h1>
+        <div class="user-info">
+            <span>Xin chào, <strong>Administrator</strong></span>
+            <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+        </div>
+    </div>
+
+    <div class="row2">
+        <div class="boxleft bgt">
+            <div class="category">
+                <img src="../../assets/images/list_menu_icon.png" alt="" onerror="this.style.display='none'"> 
+                <div class="">👤 User</div>
+            </div>
+            <div class="category active">
+                <img src="../../assets/images/list_menu_icon.png" alt="" onerror="this.style.display='none'"> 
+                <div class="">📱 Sản phẩm</div>
+            </div>
+            <div class="category">
+                <img src="../../assets/images/list_menu_icon.png" alt="" onerror="this.style.display='none'"> 
+                <div class="">🏢 Thương hiệu</div>
+            </div>
+            <div class="category">
+                <img src="../../assets/images/list_menu_icon.png" alt="" onerror="this.style.display='none'"> 
+                <div class="">📊 Thống kê</div>
+            </div>
+        </div>
+        <div class="boxright">
+            <div class="welcome-section">
+                <h2>🎉 Chào mừng đến với trang quản trị!</h2>
+                <p>Bạn đang đăng nhập với quyền <strong>Administrator</strong>. Hãy quản lý cửa hàng một cách hiệu quả!</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Tổng sản phẩm</h3>
+                    <div class="number" id="totalProducts">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Người dùng</h3>
+                    <div class="number">1</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Đơn hàng</h3>
+                    <div class="number">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Doanh thu</h3>
+                    <div class="number">0đ</div>
+                </div>
+            </div>
+
+            <h2>Quản lý sản phẩm</h2>
+
+            <form id="product-form">
+                <div class="form-row">
+                    <!-- Cột 1: Thông tin cơ bản -->
+                    <div class="form-col">
+                        <input type="hidden" id="product_id">
+                        <input type="text" id="name" placeholder="Tên sản phẩm *" required>
+                        <input type="text" id="brand" placeholder="Thương hiệu *" required>
+                        <input type="text" id="model" placeholder="Model">
+                        <input type="number" id="price" placeholder="Giá (VND)" min="0">
+                        <input type="number" id="old_price" placeholder="Giá cũ (VND)" min="0">
+                    </div>
+
+                    <!-- Cột 2: Thông tin chi tiết -->
+                    <div class="form-col">
+                        <input type="number" id="stock_quantity" placeholder="Số lượng *" required min="0">
+                        <input type="number" id="discount_percent" placeholder="% Giảm giá" min="0" max="100">
+                        <input type="text" id="badge" placeholder="Nhãn (Hot, New, Sale...)">
+                        <input type="text" id="features" placeholder="Tính năng (phân cách bằng dấu phẩy)">
+                        <select id="category">
+                            <option value="">Chọn danh mục</option>
+                            <option value="phone">Điện thoại</option>
+                            <option value="tablet">Máy tính bảng</option>
+                            <option value="accessory">Phụ kiện</option>
+                        </select>
+                    </div>
+
+                    <!-- Cột 3: Mô tả và ảnh -->
+                    <div class="form-col">
+                        <textarea id="description" placeholder="Mô tả" rows="3"></textarea>
+                        <div class="image-preview-container">
+                            <img id="image_preview" src="../../assets/images/no-image.png" alt="Preview" class="image-preview">
+                            <input type="file" id="image_file" accept="image/*">
+                        </div>
+                        <button type="submit">💾 Lưu sản phẩm</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Danh sách sản phẩm -->
+            <table id="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Thương hiệu</th>
+                        <th>Model</th>
+                        <th>Giá</th>
+                        <th>Giá cũ</th>
+                        <th>Giảm giá</th>
+                        <th>Tồn kho</th>
+                        <th>Nhãn</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list">
+                    <tr>
+                        <td colspan="11" class="no-products">Đang tải dữ liệu...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module" src="../../assets/js/controllers/ProductController.js"></script>
+    <script>
+        async function logout() {
+            try {
+                const response = await fetch('../../api/auth/index.php?action=logout', {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('Đăng xuất thành công!');
+                    window.location.href = '../auth/login.html';
+                } else {
+                    alert('Có lỗi xảy ra khi đăng xuất!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi đăng xuất!');
+            }
+        }
+
+        // Load product count for stats
+        async function loadStats() {
+            try {
+                const response = await fetch('../../api/products/index.php');
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Xử lý khi API trả về array trực tiếp hoặc object với products
+                    const products = Array.isArray(data) ? data : (data.products || []);
+                    document.getElementById('totalProducts').textContent = products.length;
+                } else {
+                    // Fallback sử dụng dữ liệu mẫu
+                    document.getElementById('totalProducts').textContent = '10';
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                // Fallback sử dụng dữ liệu mẫu
+                document.getElementById('totalProducts').textContent = '10';
+            }
+        }
+
+        // Load stats when page loads
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+</body>
+</html>

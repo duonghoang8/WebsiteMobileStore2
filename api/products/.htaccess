@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Cho phép xử lý PUT, DELETE
+RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|OPTIONS)$
+RewriteRule ^ - [L]
+
+# Nếu dùng rewrite cho REST API
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

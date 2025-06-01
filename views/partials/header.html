@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Store</title>
+    <link rel="stylesheet" href="assets/css/style2.css">
+    <style>
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .user-info {
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-info:hover {
+            background: #e9ecef;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background 0.3s;
+        }
+        
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .auth-links a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-links a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .admin-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="row top">
+        <div class="boxcenter3">
+            <div class="boxitem3 mgr5">
+                <img src="assets/images/logo.png" alt="Logo">
+            </div>
+            <div class="boxitem3 mgr2 mgt15">
+                <div class="search">
+                    <input type="text" placeholder="Bạn muốn tìm gì?" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <img src="assets/images/search_zoom_icon.png" alt="Search">
+                </div>
+            </div>
+            <div class="boxitem3 mgr2 mgt15">
+                <div class="">Hotline bán hàng </div>
+                <div class="">0123456789 </div>
+            </div>
+            <div class="boxitem3 mgr2 mgt15">
+                <div class="">Tư vấn kĩ thuật</div>
+                <div class="">0123456789 </div>
+            </div>
+            <div class="boxitem3 mgr2 mgt15 ">
+                <div class="">Tư vấn kĩ thuật</div>
+                <div class="">0123456789 </div>
+            </div>
+            <div class="boxitem3 mgt15 mgl100" id="authSection">
+                <!-- Sẽ được cập nhật bởi JavaScript -->
+                <div class="auth-links">
+                    <a href="/views/auth/login.html">Đăng nhập</a>
+                    <span> | </span>
+                    <a href="/views/auth/register.html">Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </div>

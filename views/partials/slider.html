@@ -1,0 +1,81 @@
+    <div class="rowbanner">
+        <div class="banner">
+            <!-- Slideshow container -->
+            <div class="slideshow-container">
+
+                <!-- Full-width images with number and caption text -->
+                <div class="mySlides fade">
+                    <div class="numbertext">1 / 4</div>
+                    <img src="assets/images/banner/slider1.jpg" style="width:100%">
+                    <div class="text">Caption One</div>
+                    </div>
+                <div class="mySlides fade">
+                    <div class="numbertext">2 / 4</div>
+                    <img src="assets/images/banner/slider2.jpg" style="width:100%">
+                    <div class="text">Caption Two</div>
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">3 / 4</div>
+                    <img src="assets/images/banner/slider3.jpg" style="width:100%">
+                    <div class="text">Caption Three</div>
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">4 / 4</div>
+                    <img src="assets/images/banner/slider4.jpg" style="width:100%">
+                    <div class="text">Caption Three</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {
+            slideIndex = 1
+        }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 2000); // Change image every 2 seconds
+    }
+</script>
+    <!-- <script>
+    let slideIndex = 0;
+    let timeoutId = null;
+    const delayBetweenSlides = 1000; // 3 giây giữa các ảnh
+
+    function showSlides() {
+        let slides = document.getElementsByClassName("mySlides");
+        
+        // Ẩn tất cả ảnh
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        // Tăng chỉ số và reset khi vượt quá
+        slideIndex++;
+        if (slideIndex > slides.length) {
+            slideIndex = 0; // Quay lại ảnh 1 ngay lập tức
+        }
+
+        // Hiển thị ảnh hiện tại
+        slides[slideIndex - 1].style.display = "block";
+
+        // Lên lịch chuyển ảnh tiếp theo
+        clearTimeout(timeoutId); // Hủy timeout cũ
+        timeoutId = setTimeout(showSlides, delayBetweenSlides); // Chuyển sau delay
+    }
+
+    // Khởi động slideshow khi trang tải
+    document.addEventListener("DOMContentLoaded", () => {
+        showSlides(); // Bắt đầu với ảnh đầu tiên
+    });
+</script> -->
