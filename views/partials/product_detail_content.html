@@ -1,0 +1,40 @@
+<div class="product-detail-container">
+    <div class="product-detail-card">
+        <div class="product-image-section">
+            <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+        </div>
+        <div class="product-info-section">
+            <h1 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h1>
+            <div class="product-brand">Thương hiệu: <strong><?php echo htmlspecialchars($product['brand']); ?></strong> | Model: <strong><?php echo htmlspecialchars($product['model']); ?></strong></div>
+
+            <div class="price-section">
+                <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</span>
+                <?php if (!empty($product['old_price']) && $product['old_price'] > 0): ?>
+                    <span class="old-price"><?php echo number_format($product['old_price'], 0, ',', '.'); ?>₫</span>
+                <?php endif; ?>
+                <?php if (!empty($product['discount_percent']) && $product['discount_percent'] > 0): ?>
+                    <span class="discount-badge">-<?php echo $product['discount_percent']; ?>%</span>
+                <?php endif; ?>
+            </div>
+
+            <div class="stock-status">
+                Tình trạng: <strong><?php echo ($product['stock_quantity'] > 0) ? 'Còn hàng' : 'Hết hàng'; ?></strong>
+            </div>
+
+            <div class="product-description">
+                <h2>Mô tả sản phẩm</h2>
+                <p><?php echo nl2br(htmlspecialchars($product['description'] ?: 'Chưa có mô tả cho sản phẩm này.')); ?></p>
+            </div>
+
+             <div class="specifications">
+                <h2>Thông số kỹ thuật</h2>
+                <p><?php echo nl2br(htmlspecialchars($product['specifications'] ?: 'Chưa có thông số kỹ thuật cho sản phẩm này.')); ?></p>
+            </div>
+
+            <div class="action-buttons">
+                <button class="buy-now-btn">Mua ngay</button>
+                <button class="add-to-cart-btn">Thêm vào giỏ hàng</button>
+            </div>
+        </div>
+    </div>
+</div>
