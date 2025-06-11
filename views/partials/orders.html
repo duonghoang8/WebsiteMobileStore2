@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đơn hàng của tôi</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <h2>Đơn hàng của tôi</h2>
+    <div id="orders-content">
+        <p>Đang tải đơn hàng...</p>
+    </div>
+
+    <script>
+        async function loadOrders() {
+            const response = await fetch('/api/orders');
+            const orders = await response.json();
+            const ordersContent = document.getElementById('orders-content');
+
+            if (!response.ok) {
+                ordersContent.innerHTML = `<p>Lỗi: ${response.status} - ${response.statusText}. Vui lòng thử lại!</p>`;
+                return;
+            }
+
+            if (orders.error) {
+                ordersContent.innerHTML = `<p>${orders.error}</p>`;
+                return;
+            }
+
+            if (orders.length === 0) {
+                ordersContent.innerHTML = '<p>Bạn chưa có đơn hàng nào.</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>ID Đơn hàng</th><th>Ngày đặt</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>';
+            orders.forEach(order => {
+                html += `
+                    <tr>
+                        <td>${order.order_id}</td>
+                        <td>${new Date(order.order_date).toLocaleDateString()}</td>
+                        <td>${order.total_price.toLocaleString()} VND</td>
+                        <td>${order.status}</td>
+                    </tr>
+                `;
+            });
+            html += '</tbody></table>';
+            ordersContent.innerHTML = html;
+        }
+
+        loadOrders();
+    </script>
+</body>
+</html>

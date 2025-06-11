@@ -1,0 +1,84 @@
+<div class="cart-container">
+    <h2>Giỏ hàng của bạn</h2>
+    <div id="cart-content">
+        <p>Đang tải giỏ hàng...</p>
+    </div>
+    <div class="cart-total">
+        <h3>Tổng cộng: <span id="cart-total">0 VND</span></h3>
+        <button onclick="checkout()" id="checkout-btn" style="display: none;">Thanh toán</button>
+    </div>
+</div>
+
+<script>
+    async function loadCart() {
+        const response = await fetch('/api/cart');
+        const data = await response.json();
+        const cartContent = document.getElementById('cart-content');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const cartTotal = document.getElementById('cart-total');
+
+        if (data.error) {
+            cartContent.innerHTML = `<p>${data.error} <a href="views/auth/login.html">Đăng nhập</a> để tiếp tục.</p>`;
+            return;
+        }
+
+        let total = 0;
+        cartContent.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items"></tbody>
+            </table>
+        `;
+        const cartItemsElement = document.getElementById('cart-items');
+
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><img src="${item.image_url}" width="50"> ${item.name}</td>
+                <td>${item.price.toLocaleString()} VND</td>
+                <td>
+                    <input type="number" value="${item.quantity}" min="1" max="10" onchange="updateQuantity(${item.cart_id}, this.value)">
+                </td>
+                <td>${(item.price * item.quantity).toLocaleString()} VND</td>
+                <td><button onclick="removeItem(${item.cart_id})">Xóa</button></td>
+            `;
+            cartItemsElement.appendChild(row);
+            total += item.price * item.quantity;
+        });
+
+        cartTotal.textContent = total.toLocaleString() + ' VND';
+        checkoutBtn.style.display = total > 0 ? 'inline-block' : 'none';
+    }
+
+    async function updateQuantity(cartId, quantity) {
+        await fetch('/api/cart', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId, quantity })
+        });
+        loadCart();
+    }
+
+    async function removeItem(cartId) {
+        await fetch('/api/cart', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId })
+        });
+        loadCart();
+    }
+
+    async function checkout() {
+        alert('Chức năng thanh toán đang được phát triển!');
+    }
+
+    loadCart();
+</script>
