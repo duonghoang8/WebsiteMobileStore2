@@ -11,7 +11,11 @@
 
 <script>
     async function loadCart() {
-        const response = await fetch('/api/cart');
+        const response = await fetch('/api/products/cart.php');
+        if (!response.ok) {
+            document.getElementById('cart-content').innerHTML = `<p>Lỗi: ${response.status} - ${response.statusText}</p>`;
+            return;
+        }
         const data = await response.json();
         const cartContent = document.getElementById('cart-content');
         const checkoutBtn = document.getElementById('checkout-btn');
@@ -39,6 +43,11 @@
         `;
         const cartItemsElement = document.getElementById('cart-items');
 
+        if (data.length === 0) {
+            cartContent.innerHTML = '<p>Giỏ hàng của bạn trống.</p>';
+            return;
+        }
+
         data.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -59,7 +68,7 @@
     }
 
     async function updateQuantity(cartId, quantity) {
-        await fetch('/api/cart', {
+        await fetch('/api/products/cart.php', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cartId, quantity })
@@ -68,7 +77,7 @@
     }
 
     async function removeItem(cartId) {
-        await fetch('/api/cart', {
+        await fetch('/api/products/cart.php', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cartId })

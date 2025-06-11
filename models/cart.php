@@ -9,28 +9,26 @@ class Cart {
         $this->conn = $db->getConnection();
     }
 
-    public function addToCart($userId, $productId, $quantity) {
-        try {
-            // Kiểm tra số lượng tồn kho trước khi thêm
-            $checkSql = "SELECT stock_quantity FROM products WHERE product_id = ? AND status = 'active'";
-            $checkStmt = $this->conn->prepare($checkSql);
-            $checkStmt->execute([$productId]);
-            $product = $checkStmt->fetch(PDO::FETCH_ASSOC);
+   public function addToCart($userId, $productId, $quantity) {
+    try {
+        $checkSql = "SELECT stock_quantity FROM products WHERE product_id = ? AND status = 'active'";
+        $checkStmt = $this->conn->prepare($checkSql);
+        $checkStmt->execute([$productId]);
+        $product = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($product && $product['stock_quantity'] >= $quantity) {
-                $sql = "INSERT INTO cart (user_id, product_id, quantity)
-                        VALUES (?, ?, ?)
-                        ON DUPLICATE KEY UPDATE quantity = GREATEST(quantity + ?, 1)";
-                $stmt = $this->conn->prepare($sql);
-                return $stmt->execute([$userId, $productId, $quantity, $quantity]);
-            }
-            return false;
-        } catch (PDOException $e) {
-            error_log("Error in addToCart: " . $e->getMessage());
-            return false;
+        if ($product && $product['stock_quantity'] >= $quantity) {
+            $sql = "INSERT INTO cart (user_id, product_id, quantity)
+                    VALUES (?, ?, ?)
+                    ON DUPLICATE KEY UPDATE quantity = GREATEST(quantity + ?, 1)";
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([$userId, $productId, $quantity, $quantity]);
         }
+        return false;
+    } catch (PDOException $e) {
+        error_log("Error in addToCart: " . $e->getMessage());
+        return false;
     }
-
+}
     public function getCartItems($userId) {
         try {
             $sql = "SELECT c.cart_id, p.product_id, p.name, p.price, p.image_url, c.quantity
@@ -70,7 +68,6 @@ class Cart {
 
     public function updateQuantity($cartId, $userId, $quantity) {
         try {
-            // Kiểm tra số lượng tồn kho
             $checkSql = "SELECT p.stock_quantity, c.quantity AS current_quantity
                         FROM cart c
                         JOIN products p ON c.product_id = p.product_id
@@ -91,4 +88,5 @@ class Cart {
         }
     }
 }
+
 ?>

@@ -13,14 +13,13 @@
 
     <script>
         async function loadOrders() {
-            const response = await fetch('/api/orders');
-            const orders = await response.json();
-            const ordersContent = document.getElementById('orders-content');
-
+            const response = await fetch('/api/products/orders.php');
             if (!response.ok) {
-                ordersContent.innerHTML = `<p>Lỗi: ${response.status} - ${response.statusText}. Vui lòng thử lại!</p>`;
+                document.getElementById('orders-content').innerHTML = `<p>Lỗi: ${response.status} - ${response.statusText}</p>`;
                 return;
             }
+            const orders = await response.json();
+            const ordersContent = document.getElementById('orders-content');
 
             if (orders.error) {
                 ordersContent.innerHTML = `<p>${orders.error}</p>`;

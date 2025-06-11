@@ -19,7 +19,7 @@ async function checkAuthStatus() {
                     </div>
                     <div class="dropdown-menu" id="userDropdown">
                         <a href="#" class="dropdown-item">👤 Thông tin cá nhân</a>
-                        <a href="#" class="dropdown-item" onclick="showOrders(event)">📦 Đơn hàng của tôi</a>
+                        <a href="#" class="dropdown-item" onclick="showCart(event)">🛒 Giỏ hàng</a>
                         ${data.user.role === 'admin' ? '<a href="views/admin/index.php" class="dropdown-item">⚙️ Quản trị</a>' : ''}
                         <a href="#" class="dropdown-item" onclick="logout(event)">🚪 Đăng xuất</a>
                     </div>
@@ -51,6 +51,8 @@ function toggleDropdown() {
     const dropdown = document.getElementById('userDropdown');
     if (dropdown) {
         dropdown.classList.toggle('show');
+    } else {
+        console.log('Dropdown not found');
     }
 }
 
@@ -80,26 +82,26 @@ async function logout(event) {
     }
 }
 
-async function showOrders(event) {
+async function showCart(event) {
     event.preventDefault();
-    console.log('showOrders called');
+    console.log('showCart called');
     try {
-        const response = await fetch('/api/orders', {
+        const response = await fetch('/api/products/cart.php', { // Cập nhật đường dẫn
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const orders = await response.json();
-        console.log('API response:', orders);
-        if (orders.error) {
-            alert(orders.error);
+        const cartItems = await response.json();
+        console.log('API response:', cartItems);
+        if (cartItems.error) {
+            alert(cartItems.error);
             return;
         }
-        window.location.href = 'views/orders.html';
+        window.location.href = '/views/partials/cart.html';
     } catch (error) {
-        console.error('Error fetching orders:', error);
-        alert('Không thể tải đơn hàng. Vui lòng thử lại! Chi tiết: ' + error.message);
+        console.error('Error fetching cart:', error);
+        alert('Không thể tải giỏ hàng. Vui lòng thử lại! Chi tiết: ' + error.message);
     }
 }
